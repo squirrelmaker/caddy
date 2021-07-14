@@ -214,6 +214,11 @@ func (p *parser) addresses() error {
 			break
 		}
 
+		// Users commonly forget to place a space between the address and the '{'
+		if strings.HasSuffix(tkn, "{") {
+			return p.Errf("Site addresses cannot end with a curly brace: '%s' - put a space between the token and the brace", tkn)
+		}
+
 		if tkn != "" { // empty token possible if user typed ""
 			// Trailing comma indicates another address will follow, which
 			// may possibly be on the next line
@@ -321,7 +326,7 @@ func (p *parser) doImport() error {
 	args := p.RemainingArgs()
 
 	// add args to the replacer
-	repl := caddy.NewReplacer()
+	repl := caddy.NewEmptyReplacer()
 	for index, arg := range args {
 		repl.Set("args."+strconv.Itoa(index), arg)
 	}

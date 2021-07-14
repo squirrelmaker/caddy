@@ -264,6 +264,9 @@ func (lec *LogEncoderConfig) ZapcoreEncoderConfig() zapcore.EncoderConfig {
 	if lec.MessageKey != nil {
 		cfg.MessageKey = *lec.MessageKey
 	}
+	if lec.LevelKey != nil {
+		cfg.LevelKey = *lec.LevelKey
+	}
 	if lec.TimeKey != nil {
 		cfg.TimeKey = *lec.TimeKey
 	}
@@ -304,6 +307,8 @@ func (lec *LogEncoderConfig) ZapcoreEncoderConfig() zapcore.EncoderConfig {
 			timeFormat = "2006/01/02 15:04:05.000"
 		case "wall_nano":
 			timeFormat = "2006/01/02 15:04:05.000000000"
+		case "common_log":
+			timeFormat = "02/Jan/2006:15:04:05 -0700"
 		}
 		timeFormatter = func(ts time.Time, encoder zapcore.PrimitiveArrayEncoder) {
 			encoder.AppendString(ts.UTC().Format(timeFormat))
